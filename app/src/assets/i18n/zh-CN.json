@@ -1,0 +1,63 @@
+{
+  "User lacks the necessary permissions to perform the operation":"用户缺少执行操作所需的权限",
+  "Request does not feature the necessary authorization support":"请求不具有必要的授权支持",
+
+  "Bad Request": "错误请求",
+  "Unauthorized": "未授权",
+  "Payment Required": "Payment Required",
+  "Forbidden": "禁止",
+  "Not Found": "无法找到资源",
+  "Method Not Allowed": "方法未允许",
+  "Not Acceptable": "无法访问",
+  "Proxy Authentication Require": "代理服务器认证要求",
+  "Request Timeout": "请求超时",
+  "Conflict": "冲突",
+  "Gone": "已经不存在",
+  "Length Required": "需要数据长度",
+  "Precondition Faile": "先决条件错误",
+  "Payload Too Large": "请求实体过大",
+  "URI Too Long": "请求URI过长",
+  "Unsupported Media Type": "不支持的媒体格式",
+  "Range Not Satisfiable": "请求范围无法满足",
+  "Expectation Failed": "期望失败",
+
+  "Internal Server Error": "内部服务器错误",
+  "Not Implemented": "未实现",
+  "Bad Gateway": "错误的网关",
+  "Service Unavailable": "服务无法获得",
+  "Gateway Timeout": "网关超时",
+  "HTTP Version Not Supported": "不支持的 HTTP 版本",
+
+  "Invalid payload": "无效的有效负载",
+  "is not a proper json object": "不是一个合适的json对象",
+  "The record already exists": "该记录已存在",
+  "The record is not found": "找不到记录",
+  "Internal server error": "内部服务器错误",
+  "Could not obtain Metadata Info": "无法获取元数据信息",
+  "Could not obtain Info": "无法获取信息",
+  "Resource Not found": "资源未找到",
+
+  "{{field}} is not a proper json object" :"{{field}} 不是正确的json对象",
+  "Unexpected result set length retrieving id: '{{id}}'": "Unexpected result set length retrieving id: '{{id}}'",
+  "Unexpected number of rows inserted: {{results}}":"插入的行数超出预期: {{results}}",
+  "Line number {{lineNumber}} - record has been deleted earlier and cannot be updated again.": "Line number {{lineNumber}} - 记录已被更早删除，无法再次更新",
+  "Unexpected number of rows updated: {{numRowsUpdated}}" :"更新的行数超出预期: {{numRowsUpdated}}",
+
+  "End Date cannot be earlier than Start Date" :"结束的日期不可以早过开始的日期",
+  "Invalid Date":"错误的日期格式",
+  "Type of product assignment retrieved should be 1 but found : ":"检索到的产品分配类型应为1，但可以找到：",
+  "Invalid payload: ": "无效的有效载荷",
+  "Invalid params: ": "无效的参数",
+  "Missing Id Parameter in path" : "路径中缺少Id参数 ",
+  "Payload should be in array format": "有效负载应为数组格式",
+
+  "This module {{logicalId}} is related with other module field(s): {{relatedModuleFieldsString}}" : "This module {{logicalId}} is related with other module field(s): {{relatedModuleFieldsString}}",
+  "This module {{logicalId}} is related with other module(s): {{relatedModulesString}}":"This module {{logicalId}} is related with other module(s): {{relatedModulesString}}",
+  "Import failed. Error importing rows at line numbers: {{lineNumber}}":"Import failed. Error importing rows at line numbers: {{lineNumber}}",
+  "Not allowed to edit once MSL has started.": "无法更改已经开始的MSL",
+  "Not allowed to edit once MSL has ended.": "无法更改已经结束的MSL",
+
+  "Access denied. The distributor of this user is either inactive or deleted from system.": "拒绝访问. 该用户的分发者处于非活动状态或已从系统中删除."
+
+
+}

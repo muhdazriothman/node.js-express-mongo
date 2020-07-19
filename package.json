@@ -1,0 +1,27 @@
+{
+  "name": "sample",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "startlocal": "@powershell -Command $env:DEBUG='*'; node --max-http-header-size=80000 --inspect=9230 app/src/bin/www"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/muhdazriothman/node.js-express-mongo.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/muhdazriothman/node.js-express-mongo/issues"
+  },
+  "homepage": "https://github.com/muhdazriothman/node.js-express-mongo#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "compression": "^1.7.4",
+    "express": "^4.17.1",
+    "helmet": "^3.23.3",
+    "mongodb": "^3.5.9"
+  }
+}

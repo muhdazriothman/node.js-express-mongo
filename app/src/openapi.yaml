@@ -1,0 +1,1766 @@
+openapi: 3.0.2
+
+info:
+  title: Must Sell List API
+  description: >
+    Must Sell List API specification for Accenture Newspage Cloud. 
+    This specification covers the current endpoints for must sell list API service.
+    Get the must sell list data, create new data and update existing data. 
+    Data is available in JSON format.
+  version: 1.0.0
+  
+servers: 
+  - url: https://performance-svc-dev.cfapps.jp10.hana.ondemand.com/api/v1.0
+    description: Development server on an SAP Cloud Foundry account
+  - url: http://localhost:5050/api/v1.0
+    description: Local testing of the API
+      
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+
+  parameters:
+    Id:
+      name: Id
+      description: Unique id
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/Id'
+    mslItem:
+      name: mslItem
+      description: Must sell list item name to be assign
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/mslItem'    
+    
+  schemas:   
+    Id:
+      title: Schema for Id
+      type: string
+      minLength: 45
+      maxLength: 45
+    mslItem:
+      title: Schema for mslItem
+      type: string
+      enum:
+        - distributor
+        - route
+        - customer
+    msl:
+      title: Schema for Must Sell List response payload
+      type: object
+      properties:
+        ID:
+          type: string
+          description: Msl Unique Id
+          readOnly: true
+        TENANT_ID:
+          type: string
+          description: Tenant Id
+          nullable: true
+        MSL_CD:
+          type: string
+          description: Must Sell List Code
+          maxLength: 20
+        MSL_DESC:
+          type: string
+          description: Must Sell List Description
+          maxLength: 50
+        START_DT:
+          type: string
+          description: Start Date
+          format: date
+        END_DT:
+          type: string
+          description: End Date
+          format: date
+        TYPE:
+          type: string
+          description: Type
+        DIST_ASS_ALL:
+          type: boolean
+          description: Assign MSL to All Distributor
+          default: false
+        CUST_ASS_ALL:
+          type: boolean
+          description: Assign MSL to All Customer
+          default: false
+        ROUTE_ASS_ALL:
+          type: boolean
+          description: Assign MSL to All Route operation type
+          default: false
+        STATUS:
+          type: boolean
+          description: Indicate active or inactive
+          default: true
+        IS_DELETED:
+          type: boolean
+          description: Indicate record is deleted
+        MODIFIED_DATE:
+          type: string
+          description: Last Modified Date
+        MODIFIED_BY:
+          type: string
+          description: Last Modified By
+        CREATED_DATE:
+          type: string
+          description: Created Date
+        CREATED_BY:
+          type: string
+          description: Created By
+        VERSION:
+          type: integer
+          description: Version
+          readOnly: true  
+    newMsl:
+      title: Schema for new Must Sell List payload
+      type: object
+      properties:
+        MSL_DESC:
+          type: string
+          description: Must Sell List Description
+          maxLength: 50
+        START_DT:
+          type: string
+          description: Start Date
+          format: date
+        END_DT:
+          type: string
+          description: End Date
+          format: date
+        TYPE:
+          type: string
+          description: Type
+          enum:
+            - M
+        STATUS:
+          type: boolean
+          description: Indicate active or inactive
+          default: true
+      additionalProperties: false          
+      required:
+          - MSL_DESC
+          - START_DT
+          - END_DT
+          - TYPE
+          - STATUS    
+    updateMsl:
+      title: Schema for update Must Sell List payload
+      type: object
+      properties:
+        ID:
+          type: string
+          description: Msl Unique Id
+          readOnly: true
+        TENANT_ID:
+          type: string
+          description: Tenant Id
+          nullable: true
+        MSL_CD:
+          type: string
+          description: Must Sell List Code
+          maxLength: 20
+        MSL_DESC:
+          type: string
+          description: Must Sell List Description
+          maxLength: 50
+        START_DT:
+          type: string
+          description: Start Date
+          format: date
+        END_DT:
+          type: string
+          description: End Date
+          format: date
+        TYPE:
+          type: string
+          description: Type
+          enum:
+            - M
+        DIST_ASS_ALL:
+          type: boolean
+          description: Assign MSL to All Distributor
+          default: true
+        CUST_ASS_ALL:
+          type: boolean
+          description: Assign MSL to All Customer
+          default: true
+        ROUTE_ASS_ALL:
+          type: boolean
+          description: Assign MSL to All Route operation type
+          default: true
+        STATUS:
+          type: boolean
+          description: Indicate active or inactive
+          default: true
+        IS_DELETED:
+          type: boolean
+          description: Indicate record is deleted
+        MODIFIED_DATE:
+          type: string
+          description: Last Modified Date
+        MODIFIED_BY:
+          type: string
+          description: Last Modified By
+        CREATED_DATE:
+          type: string
+          description: Created Date
+        CREATED_BY:
+          type: string
+          description: Created By    
+        VERSION:
+          type: integer
+          description: Version
+      additionalProperties: false          
+      required:
+          - ID
+          - MSL_CD 
+          - MSL_DESC
+          - START_DT
+          - END_DT
+          - TYPE
+          - STATUS
+          - VERSION
+    mslGeoNode:
+      title: Schema for Must Sell List Distributors Assignment
+      type: object
+      properties:
+        ID:
+          type: string
+          description: Msl Geo Node ID
+          pattern: '^[a-zA-Z0-9]{8}:[a-zA-Z0-9]{8}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{12}$'
+        MSL_ID:
+          type: string
+          description: Msl ID
+          pattern: '^[a-zA-Z0-9]{8}:[a-zA-Z0-9]{8}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{12}$'
+        HIER_TREE_ID:
+          type: string
+          description: Hierarchy Tree ID
+          pattern: '^[a-zA-Z0-9]{8}:[a-zA-Z0-9]{8}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{12}$'
+        NODE_TREE_ID:
+          type: string
+          description: Node Tree ID
+          pattern: '^[a-zA-Z0-9]{8}:[a-zA-Z0-9]{8}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{12}$'
+        IS_DELETED:
+          type: boolean
+          description: Indicate record is deleted
+        MODIFIED_DATE:
+          type: string
+          description: Last Modified Date
+          format: date
+        MODIFIED_BY:
+          type: string
+          description: Last Modified By
+        CREATED_DATE:
+          type: string
+          description: Created Date
+          format: date  
+        CREATED_BY:
+          type: string
+          description: Created By
+        VERSION:
+          type: integer
+          description: Version
+          readOnly: true  
+    newMslGeoNode:
+      title: Schema for Must Sell List Distributors Assignment Creation
+      type: array
+      minItems: 1
+      items: 
+        type: object
+        properties:
+          HIER_TREE_ID:
+            type: string
+            description: Hierarchy Tree ID
+            pattern: '^[a-zA-Z0-9]{8}:[a-zA-Z0-9]{8}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{12}$'
+          HIER_NODE_ID:
+            type: string
+            description: Node Tree ID
+            pattern: '^[a-zA-Z0-9]{8}:[a-zA-Z0-9]{8}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{12}$'
+        additionalProperties: false          
+        required:
+          - HIER_TREE_ID
+          - HIER_NODE_ID
+    mslPrd:
+      title: Schema for msl product response payload
+      type: object
+      properties:
+        ID:
+          type: string
+          description: Msl product attributes Unique Id
+          readOnly: true
+        MSL_ID:
+          type: string
+          description: MSL ID
+        ASS_TYPE_ID:
+          type: string
+          description: Type of product assignment
+        ASS_ENTITY_ID:
+          type: string
+          description: Product Hierarchy Level / Product Attribute 
+        ASS_ENTITY_VALUE_ID:
+          type: string
+          description: Product Hierarchy / Product Attribute Value ID / Product ID
+        IS_DELETED:
+          type: boolean
+          description: Indicate record is deleted
+        MODIFIED_DATE:
+          type: string
+          description: Last Modified Date
+        MODIFIED_BY:
+          type: string
+          description: Last Modified By
+        CREATED_DATE:
+          type: string
+          description: Created Date
+        CREATED_BY:
+          type: string
+          description: Created By
+        VERSION:
+          type: integer
+          description: Version
+    newMslPrdHier:
+      title: Schema for new msl product hierarchy payload
+      type: array
+      minItems: 1
+      items: 
+        type: object
+        properties:
+          ASS_TYPE_ID:
+            type: string
+            minLength: 45
+            maxLength: 45
+            description: Type of product assignment
+          PRD_HIER_ID:
+            type: string
+            minLength: 45
+            maxLength: 45
+            description: Hierarchy ID
+          ASS_ENTITY_ID:
+            type: string
+            minLength: 45
+            maxLength: 45
+            description: Product Hierarchy Level  
+            nullable: true
+          ASS_ENTITY_VALUE_ID:
+            type: string
+            minLength: 45
+            maxLength: 45
+            description: Product Hierarchy / Product ID
+        additionalProperties: false          
+        required:
+          - ASS_TYPE_ID
+          - PRD_HIER_ID
+          - ASS_ENTITY_VALUE_ID
+    newMslPrdAttr:
+      title: Schema for new msl product attribute payload
+      type: array
+      minItems: 1
+      items: 
+        type: object
+        properties:
+          ASS_TYPE_ID:
+            type: string
+            minLength: 45
+            maxLength: 45
+            description: Type of product assignment
+          PRD_HIER_ID:
+            type: string
+            minLength: 45
+            maxLength: 45
+            description: Hierarchy ID
+            nullable: true
+          ASS_ENTITY_ID:
+            type: string
+            minLength: 45
+            maxLength: 45
+            description: Product Attribute 
+          ASS_ENTITY_VALUE_ID:
+            type: string
+            minLength: 45
+            maxLength: 45
+            description: Product Attribute Value ID / Product ID
+        additionalProperties: false          
+        required:
+          - ASS_TYPE_ID
+          - ASS_ENTITY_ID
+          - ASS_ENTITY_VALUE_ID
+    mslDistEx:
+      title: Schema for Must Sell List Distributors Exclusion
+      type: object
+      properties:
+        ID:
+          type: string
+          description: Msl Distributors Exclusion ID
+          pattern: '^[a-zA-Z0-9]{8}:[a-zA-Z0-9]{8}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{12}$'
+        MSL_ID:
+          type: string
+          description: Msl ID
+          pattern: '^[a-zA-Z0-9]{8}:[a-zA-Z0-9]{8}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{12}$'
+        DIST_ID:
+          type: string
+          description: Distributor ID
+          pattern: '^[a-zA-Z0-9]{8}:[a-zA-Z0-9]{8}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{12}$'
+        IS_DELETED:
+          type: boolean
+          description: Indicate record is deleted
+        MODIFIED_DATE:
+          type: string
+          description: Last Modified Date
+          format: date
+        MODIFIED_BY:
+          type: string
+          description: Last Modified By
+        CREATED_DATE:
+          type: string
+          description: Created Date
+          format: date  
+        CREATED_BY:
+          type: string
+          description: Created By
+        VERSION:
+          type: integer
+          description: Version
+          readOnly: true  
+    newMslDistEx:
+      title: Schema for new Must Sell List Distributors Exclusion Creation
+      type: array
+      minItems: 1
+      items: 
+        type: object
+        properties:
+          DIST_ID:
+            type: string
+            description: Distributor ID
+            pattern: '^[a-zA-Z0-9]{8}:[a-zA-Z0-9]{8}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{12}$'
+        additionalProperties: false          
+        required:
+          - DIST_ID
+    mslCust:
+      title: Schema for msl customer response payload
+      type: object
+      properties:
+        ID:
+          type: string
+          description: Msl customer unique id
+          readOnly: true
+        MSL_ID:
+          type: string
+          description: Must Sell List ID
+        ASS_TYPE_ID:
+          type: string
+          description: Customer assignment type
+        ASS_ENTITY_ID:
+          type: string
+          description: Customer Hierarchy Level / Customer Attribute 
+        ASS_ENTITY_VALUE_ID:
+          type: string
+          description: Customer Hierarchy / Customer Attribute Value ID / Customer ID
+        IS_DELETED:
+          type: boolean
+          description: Indicate record is deleted
+        MODIFIED_DATE:
+          type: string
+          description: Last Modified Date
+        MODIFIED_BY:
+          type: string
+          description: Last Modified By
+        CREATED_DATE:
+          type: string
+          description: Created Date
+        CREATED_BY:
+          type: string
+          description: Created By
+        VERSION:
+          type: integer
+          description: Version
+    newMslCustHier:
+      title: Schema for new msl customer hierarchy payload
+      type: array
+      minItems: 1
+      items: 
+        type: object
+        properties:
+          ASS_TYPE_ID:
+            type: string
+            minLength: 45
+            maxLength: 45
+            description: Customer assignment type
+          CUST_HIER_ID:
+            type: string
+            minLength: 45
+            maxLength: 45
+            description: Hierarchy ID
+          ASS_ENTITY_ID:
+            type: string
+            minLength: 45
+            maxLength: 45
+            description: Customer hierarchy level  
+            nullable: true
+          ASS_ENTITY_VALUE_ID:
+            type: string
+            minLength: 45
+            maxLength: 45
+            description: Customer Hierarchy / Customer ID
+        additionalProperties: false          
+        required:
+          - ASS_TYPE_ID
+          - CUST_HIER_ID
+          - ASS_ENTITY_VALUE_ID
+    newMslCustAttr:
+      title: Schema for new msl customer attribute payload
+      type: array
+      minItems: 1
+      items: 
+        type: object
+        properties:
+          ASS_TYPE_ID:
+            type: string
+            minLength: 45
+            maxLength: 45
+            description: Type of customer assignment
+          CUST_HIER_ID:
+            type: string
+            minLength: 45
+            maxLength: 45
+            description: Hierarchy ID
+            nullable: true
+          ASS_ENTITY_ID:
+            type: string
+            minLength: 45
+            maxLength: 45
+            description: Customer Attribute 
+          ASS_ENTITY_VALUE_ID:
+            type: string
+            minLength: 45
+            maxLength: 45
+            description: Customer Hierarchy / Customer Attribute Value ID / Customer ID
+        additionalProperties: false          
+        required:
+          - ASS_TYPE_ID
+          - ASS_ENTITY_ID
+          - ASS_ENTITY_VALUE_ID
+    mslCustEx:
+      title: Schema for Must Sell List Customer Exclusion
+      type: object
+      properties:
+        ID:
+          type: string
+          description: Msl Customer Exclusion ID
+          pattern: '^[a-zA-Z0-9]{8}:[a-zA-Z0-9]{8}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{12}$'
+        MSL_ID:
+          type: string
+          description: Msl ID
+          pattern: '^[a-zA-Z0-9]{8}:[a-zA-Z0-9]{8}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{12}$'
+        CUST_ID:
+          type: string
+          description: Customer ID
+          pattern: '^[a-zA-Z0-9]{8}:[a-zA-Z0-9]{8}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{12}$'
+        IS_DELETED:
+          type: boolean
+          description: Indicate record is deleted
+        MODIFIED_DATE:
+          type: string
+          description: Last Modified Date
+          format: date
+        MODIFIED_BY:
+          type: string
+          description: Last Modified By
+        CREATED_DATE:
+          type: string
+          description: Created Date
+          format: date  
+        CREATED_BY:
+          type: string
+          description: Created By
+        VERSION:
+          type: integer
+          description: Version
+          readOnly: true  
+    newMslCustEx:
+      title: Schema for new Must Sell List Customer Exclusion Creation
+      type: array
+      minItems: 1
+      items: 
+        type: object
+        properties:
+          CUST_ID:
+            type: string
+            description: Customer ID
+            pattern: '^[a-zA-Z0-9]{8}:[a-zA-Z0-9]{8}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{12}$'
+        additionalProperties: false          
+        required:
+          - CUST_ID
+    mslRouteOpType:
+      title: Schema for Must Sell List Distributors Assignment
+      type: object
+      properties:
+        ID:
+          type: string
+          description: Msl Geo Node ID
+          pattern: '^[a-zA-Z0-9]{8}:[a-zA-Z0-9]{8}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{12}$'
+        MSL_ID:
+          type: string
+          description: Msl ID
+          pattern: '^[a-zA-Z0-9]{8}:[a-zA-Z0-9]{8}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{12}$'
+        ROUTE_OP_TYPE:
+          type: string
+          description: Route Operation Type Code
+          minLength: 1
+        IS_DELETED:
+          type: boolean
+          description: Indicate record is deleted
+        MODIFIED_DATE:
+          type: string
+          description: Last Modified Date
+          format: date
+        MODIFIED_BY:
+          type: string
+          description: Last Modified By
+        CREATED_DATE:
+          type: string
+          description: Created Date
+          format: date  
+        CREATED_BY:
+          type: string
+          description: Created By
+        VERSION:
+          type: integer
+          description: Version
+          readOnly: true  
+    newMslRouteOpType:
+      title: Schema for Must Sell List Route Assignment Creation
+      type: array
+      minItems: 1
+      items: 
+        type: object
+        properties:
+          ROUTE_OP_TYPE:
+            type: string
+            description: Operation Type Code
+        additionalProperties: false          
+        required:
+          - ROUTE_OP_TYPE
+    mslRouteEx:
+      title: Schema for Must Sell List Route Exclusion
+      type: object
+      properties:
+        ID:
+          type: string
+          description: Msl Route Exclusion ID
+          pattern: '^[a-zA-Z0-9]{8}:[a-zA-Z0-9]{8}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{12}$'
+        MSL_ID:
+          type: string
+          description: Msl ID
+          pattern: '^[a-zA-Z0-9]{8}:[a-zA-Z0-9]{8}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{12}$'
+        ROUTE_ID:
+          type: string
+          description: Route ID
+          pattern: '^[a-zA-Z0-9]{8}:[a-zA-Z0-9]{8}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{12}$'
+        IS_DELETED:
+          type: boolean
+          description: Indicate record is deleted
+        MODIFIED_DATE:
+          type: string
+          description: Last Modified Date
+          format: date
+        MODIFIED_BY:
+          type: string
+          description: Last Modified By
+        CREATED_DATE:
+          type: string
+          description: Created Date
+          format: date  
+        CREATED_BY:
+          type: string
+          description: Created By
+        VERSION:
+          type: integer
+          description: Version
+          readOnly: true
+    newMslRouteEx:
+      title: Schema for new Must Sell List Route Exclusion Creation
+      type: array
+      minItems: 1
+      items: 
+        type: object
+        properties:
+          ROUTE_ID:
+            type: string
+            description: Route ID
+            pattern: '^[a-zA-Z0-9]{8}:[a-zA-Z0-9]{8}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{12}$'
+        additionalProperties: false          
+        required:
+          - ROUTE_ID
+paths:
+  '/msl':
+    get:
+      summary: Returns all the must get list
+      tags:
+        - msl-module
+      security:
+        - BearerAuth:
+          - MSL.View
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/msl'
+        '204':
+          description: No msl found
+        '401':
+          description: Not authenticated
+        '403':
+          description: Not authorized
+        '500':
+          description: Internal server error
+        '504':
+          description: Gateway timeout
+
+    post:
+      summary: Creates a new msl
+      tags:
+        - msl-module
+      security:
+        - BearerAuth:
+            - MSL.Update
+      requestBody:
+        description: New msl standard fields
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/newMsl'
+      responses:
+          '201':
+            description: A new msl has been created
+          '400':
+            description: Invalid payload
+          '401':
+            description: Not authenticated
+          '403':
+            description: Forbidden
+          '409':
+            description: Msl already exists
+          '500':
+            description: Internal server error
+          '504':
+            description: Gateway timeout      
+
+  '/msl/{Id}': 
+    get:
+      summary: Returns an object of the associated msl based on a particular id
+      tags:
+        - msl-module
+      security:
+        - BearerAuth:
+          - MSL.View
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/msl'
+        '401':
+          description: Not authenticated
+        '403':
+          description: Not authorized
+        '404':
+          description: No msl with given `Id` found  
+        '500':
+          description: Internal server error
+        '504':
+          description: Gateway timeout
+
+    put:
+      summary: Modify an existing msl based on a particular {Id} 
+      tags:
+        - msl-module
+      security:
+        - BearerAuth:
+            - MSL.Update
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      requestBody:
+        description: Update msl standard fields
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/updateMsl'
+              properties:
+                bundleId:
+                  type: string
+                  description: The created Msl Id
+      responses:
+        '200':
+          description: The msl was successfully modified
+        '400':
+          description: Invalid payload
+        '401':
+          description: Not authenticated
+        '403':
+          description: Not authorized
+        '404':
+          description: No msl with the given `Id` was found Or Incorrect request body
+        '409':
+          description: The requested modification would have created a duplicate msl and therefore could not be completed
+        '500':
+          description: Internal server error
+        '504':
+          description: Gateway timeout
+
+    delete:
+      summary: Deletes an existing msl based on a particular {Id} 
+      tags:
+        - msl-module
+      security:
+        - BearerAuth:
+            - MSL.Update
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      responses:
+        '200':
+          description: The msl was successfully deleted and return 1 as one row deleted.
+        '401':
+          description: Not authenticated
+        '403':
+          description: Not authorized
+        '404':
+          description: No msl with the given `Id` was found
+        '500':
+          description: Internal server error
+        '504':
+          description: Gateway timeout
+
+  '/msl/{Id}/assigned-all/{mslItem}': 
+    put:
+      summary: Assign existing msl based on a particular {Id} 
+      tags:
+        - msl-module
+      security:
+        - BearerAuth:
+            - MSL.Update
+      parameters:
+        - $ref: '#/components/parameters/Id'
+        - $ref: '#/components/parameters/mslItem'
+      requestBody:
+        description: Assign msl standard fields
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/updateMsl'
+              properties:
+                bundleId:
+                  type: string
+                  description: The assigned Msl Id
+      responses:
+        '200':
+          description: The msl was successfully assigned
+        '400':
+          description: Invalid payload / Bad Request
+        '401':
+          description: Not authenticated
+        '403':
+          description: Not authorized
+        '404':
+          description: No msl with the given `Id` was found 
+        '500':
+          description: Internal server error
+        '504':
+          description: Gateway timeout
+
+  '/msl/:Id/msl-prd':
+    get:
+      summary: get all assigned msl products that fulfill the assignment criteria.
+      tags:
+        - msl-prd-module
+      security:
+        - BearerAuth:
+          - MSL.View
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/mslPrd'
+        '204':
+          description: No content
+        '401':
+          description: Not authenticated
+        '403':
+          description: Not authorized
+        '404':
+          description: Not Found
+        '500':
+          description: Internal server error
+        '504':
+          description: Gateway timeout
+  
+  '/msl/:Id/msl-prd-hier':
+    get:
+      summary: get all assigned msl product hier
+      tags:
+        - msl-prd-hier-module
+      security:
+        - BearerAuth:
+          - MSL.View
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/mslPrd'
+        '204':
+          description: No content
+        '401':
+          description: Not authenticated
+        '403':
+          description: Not authorized
+        '404':
+          description: Not Found
+        '500':
+          description: Internal server error
+        '504':
+          description: Gateway timeout
+    post:
+      summary: assign msl product hier 
+      tags:
+        - msl-prd-hier-module
+      security:
+        - BearerAuth:
+            - MSL.Update
+      requestBody:
+        description: New msl product hierarchy standard fields
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/newMslPrdHier'
+      responses:
+          '201':
+            description: A new msl product hierarchy has been created
+          '400':
+            description: Invalid payload
+          '401':
+            description: Not authenticated
+          '403':
+            description: Forbidden
+          '409':
+            description: Msl already exists
+          '500':
+            description: Internal server error
+          '504':
+            description: Gateway timeout     
+
+  '/msl/{Id}/msl-prd-hier/{Id}':  
+    delete:
+      summary: delete a msl product hierarchy with that id
+      tags:
+        - msl-prd-hier-module
+      security:
+        - BearerAuth:
+          - MSL.Update
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      responses:
+        '200':
+          description: The msl product hierarchy was successfully deleted and return 1 as one row deleted.
+        '401':
+          description: Not authenticated
+        '403':
+          description: Not authorized
+        '404':
+          description: No msl product hierarchy with given `Id` found  
+        '500':
+          description: Internal server error
+        '504':
+          description: Gateway timeout
+
+  '/msl/:Id/msl-prd-attr':
+    get:
+      summary: get all assigned msl product attributes
+      tags:
+        - msl-prd-attr-module
+      security:
+        - BearerAuth:
+          - MSL.View
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/mslPrd'
+        '204':
+          description: No content
+        '401':
+          description: Not authenticated
+        '403':
+          description: Not authorized
+        '404':
+          description: Not Found
+        '500':
+          description: Internal server error
+        '504':
+          description: Gateway timeout
+    post:
+      summary: assign msl product attributes 
+      tags:
+        - msl-prd-attr-module
+      security:
+        - BearerAuth:
+            - MSL.Update
+      requestBody:
+        description: New msl product attribute standard fields
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/newMslPrdAttr'
+      responses:
+          '201':
+            description: A new msl product attribute has been created
+          '400':
+            description: Invalid payload
+          '401':
+            description: Not authenticated
+          '403':
+            description: Forbidden
+          '409':
+            description: Msl already exists
+          '500':
+            description: Internal server error
+          '504':
+            description: Gateway timeout 
+
+  '/msl/{Id}/msl-prd-attr/{Id}':  
+    delete:
+      summary: delete a msl product attribute with that id
+      tags:
+        - msl-prd-attr-module
+      security:
+        - BearerAuth:
+          - MSL.Update
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      responses:
+        '200':
+          description: The msl product attribute was successfully deleted and return 1 as one row deleted.
+        '401':
+          description: Not authenticated
+        '403':
+          description: Not authorized
+        '404':
+          description: No msl product hierarchy with given `Id` found  
+        '500':
+          description: Internal server error
+        '504':
+          description: Gateway timeout
+   
+  '/msl/{Id}/msl-geo-node': 
+    get:
+      summary: Returns an object of the associated msl geo node based on msl id
+      tags:
+        - msl-geo-node-module
+      security:
+        - BearerAuth:
+          - MSL.View
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/mslGeoNode'
+        '204':
+          description: No Content
+        '401':
+          description: Not authenticated
+        '403':
+          description: Not authorized
+        '404':
+          description: No msl with given `mslId` found  
+        '500':
+          description: Internal server error
+        '504':
+          description: Gateway timeout
+    post:
+      summary: Creates a new msl geo node record based on msl id 
+      tags:
+        - msl-geo-node-module
+      security:
+        - BearerAuth:
+            - MSL.Update
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      requestBody:
+        description: Create msl geo node standard fields
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/newMslGeoNode'
+      responses:
+        '201':
+          description: The msl geo node record was successfully created
+        '400':
+          description: Invalid payload
+        '401':
+          description: Not authenticated
+        '403':
+          description: Not authorized
+        '404':
+          description: No msl with the given `mslId` was found
+        '409':
+          description: The requested modification would have created a duplicate msl and therefore could not be completed
+        '500':
+          description: Internal server error
+        '504':
+          description: Gateway timeout
+
+  '/msl/{Id}/msl-dist': 
+    get:
+      summary: Returns an object of the associated msl dist based on msl id
+      tags:
+        - msl-geo-node-module
+      security:
+        - BearerAuth:
+          - MSL.View
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/mslGeoNode'
+        '204':
+          description: No Content
+        '401':
+          description: Not authenticated
+        '403':
+          description: Not authorized
+        '404':
+          description: No msl with given `mslId` found  
+        '500':
+          description: Internal server error
+        '504':
+          description: Gateway timeout
+          
+  '/msl/{Id}/msl-geo-node/{Id}': 
+    delete:
+      summary: Deletes an existing msl geo node based on a particular {Id}
+      tags:
+        - msl-geo-node-module
+      security:
+        - BearerAuth:
+          - MSL.View
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      responses:
+        '200':
+          description: OK
+        '204':
+          description: No Content
+        '401':
+          description: Not authenticated
+        '403':
+          description: Not authorized
+        '404':
+          description: No msl geo node with given `mslId` or `id` found  
+        '500':
+          description: Internal server error
+        '504':
+          description: Gateway timeout
+  
+  '/msl/{Id}/msl-dist-ex': 
+    get:
+      summary: Returns a list of excluded distributors based on msl id
+      tags:
+        - msl-dist-ex-module
+      security:
+        - BearerAuth:
+          - MSL.View
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/mslDistEx'
+        '204':
+          description: No Content
+        '401':
+          description: Not authenticated
+        '403':
+          description: Not authorized
+        '404':
+          description: No msl with given `mslId` found  
+        '500':
+          description: Internal server error
+        '504':
+          description: Gateway timeout
+    post:
+      summary: Creates excluded distributor based on msl id 
+      tags:
+        - msl-dist-ex-module
+      security:
+        - BearerAuth:
+            - MSL.Update
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      requestBody:
+        description: Create msl geo node standard fields
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/newMslDistEx'
+      responses:
+        '201':
+          description: The msl geo node record was successfully created
+        '400':
+          description: Invalid payload
+        '401':
+          description: Not authenticated
+        '403':
+          description: Not authorized
+        '404':
+          description: No msl with the given `mslId` was found
+        '409':
+          description: The requested modification would have created a duplicate msl and therefore could not be completed
+        '500':
+          description: Internal server error
+        '504':
+          description: Gateway timeout
+          
+  '/msl/{Id}/msl-dist-ex/{Id}': 
+    delete:
+      summary: Deletes an existing excluded distributors based on a particular {Id}
+      tags:
+        - msl-dist-ex-module
+      security:
+        - BearerAuth:
+          - MSL.View
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      responses:
+        '200':
+          description: OK
+        '204':
+          description: No Content
+        '401':
+          description: Not authenticated
+        '403':
+          description: Not authorized
+        '404':
+          description: No msl geo node with given `mslId` or `id` found  
+        '500':
+          description: Internal server error
+        '504':
+          description: Gateway timeout
+
+  '/msl/:Id/msl-cust':
+    get:
+      summary: get all assigned msl customer that fulfill the assignment criteria.
+      tags:
+        - msl-cust-module
+      security:
+        - BearerAuth:
+          - MSL.View
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/mslCust'
+        '204':
+          description: No content
+        '401':
+          description: Not authenticated
+        '403':
+          description: Not authorized
+        '404':
+          description: Not Found
+        '500':
+          description: Internal server error
+        '504':
+          description: Gateway timeout
+  
+  '/msl/:Id/msl-cust-hier':
+    get:
+      summary: get all assigned msl customer hier
+      tags:
+        - msl-cust-hier-module
+      security:
+        - BearerAuth:
+          - MSL.View
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/mslCust'
+        '204':
+          description: No content
+        '401':
+          description: Not authenticated
+        '403':
+          description: Not authorized
+        '404':
+          description: Not Found
+        '500':
+          description: Internal server error
+        '504':
+          description: Gateway timeout
+    post:
+      summary: assign msl customer hier 
+      tags:
+        - msl-cust-hier-module
+      security:
+        - BearerAuth:
+            - MSL.Update
+      requestBody:
+        description: New msl customer hierarchy standard fields
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/newMslCustHier'
+      responses:
+          '201':
+            description: A new msl customer hierarchy has been created
+          '400':
+            description: Invalid payload
+          '401':
+            description: Not authenticated
+          '403':
+            description: Forbidden
+          '409':
+            description: Msl already exists
+          '500':
+            description: Internal server error
+          '504':
+            description: Gateway timeout     
+
+  '/msl/{Id}/msl-cust-hier/{Id}':  
+    delete:
+      summary: delete a msl customer hierarchy with that id
+      tags:
+        - msl-cust-hier-module
+      security:
+        - BearerAuth:
+          - MSL.Update
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      responses:
+        '200':
+          description: The msl customer hierarchy was successfully deleted and return 1 as one row deleted.
+        '401':
+          description: Not authenticated
+        '403':
+          description: Not authorized
+        '404':
+          description: No msl customer hierarchy with given `Id` found  
+        '500':
+          description: Internal server error
+        '504':
+          description: Gateway timeout
+
+  '/msl/:Id/msl-cust-attr':
+    get:
+      summary: get all assigned msl customer attributes
+      tags:
+        - msl-cust-attr-module
+      security:
+        - BearerAuth:
+          - MSL.View
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/mslCust'
+        '204':
+          description: No content
+        '401':
+          description: Not authenticated
+        '403':
+          description: Not authorized
+        '404':
+          description: Not Found
+        '500':
+          description: Internal server error
+        '504':
+          description: Gateway timeout
+    post:
+      summary: assign msl customer attributes 
+      tags:
+        - msl-cust-attr-module
+      security:
+        - BearerAuth:
+            - MSL.Update
+      requestBody:
+        description: New msl customer attribute standard fields
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/newMslCustAttr'
+      responses:
+          '201':
+            description: A new msl customer attribute has been created
+          '400':
+            description: Invalid payload
+          '401':
+            description: Not authenticated
+          '403':
+            description: Forbidden
+          '409':
+            description: Msl already exists
+          '500':
+            description: Internal server error
+          '504':
+            description: Gateway timeout 
+
+  '/msl/{Id}/msl-cust-attr/{Id}':  
+    delete:
+      summary: delete a msl customer attribute with that id
+      tags:
+        - msl-cust-attr-module
+      security:
+        - BearerAuth:
+          - MSL.Update
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      responses:
+        '200':
+          description: The msl customer attribute was successfully deleted and return 1 as one row deleted.
+        '401':
+          description: Not authenticated
+        '403':
+          description: Not authorized
+        '404':
+          description: No msl product hierarchy with given `Id` found  
+        '500':
+          description: Internal server error
+        '504':
+          description: Gateway timeout
+
+  '/msl/{Id}/msl-cust-ex': 
+    get:
+      summary: Returns a list of excluded customer based on msl id
+      tags:
+        - msl-cust-ex-module
+      security:
+        - BearerAuth:
+          - perfMgmtMSL.V
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/mslCustEx'
+        '204':
+          description: No Content
+        '401':
+          description: Not authenticated
+        '403':
+          description: Not authorized
+        '404':
+          description: No msl with given `mslId` found  
+        '500':
+          description: Internal server error
+        '504':
+          description: Gateway timeout
+    post:
+      summary: Creates excluded customer based on msl id 
+      tags:
+        - msl-cust-ex-module
+      security:
+        - BearerAuth:
+            - perfMgmtMSL.Ass
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      requestBody:
+        description: Create msl customer exclusion standard fields
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/newMslCustEx'
+      responses:
+        '201':
+          description: The msl customer exclusion record was successfully created
+        '400':
+          description: Invalid payload
+        '401':
+          description: Not authenticated
+        '403':
+          description: Not authorized
+        '404':
+          description: No msl with the given `mslId` was found
+        '409':
+          description: Conflict error due to record already exists
+        '500':
+          description: Internal server error
+        '504':
+          description: Gateway timeout
+          
+  '/msl/{Id}/msl-cust-ex/{Id}': 
+    delete:
+      summary: Deletes an existing excluded customer based on a particular {Id}
+      tags:
+        - msl-cust-ex-module
+      security:
+        - BearerAuth:
+          - perfMgmtMSL.Ass
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      responses:
+        '200':
+          description: OK
+        '204':
+          description: No Content
+        '401':
+          description: Not authenticated
+        '403':
+          description: Not authorized
+        '404':
+          description: No msl excluded customer with given `mslId` or `id` found  
+        '500':
+          description: Internal server error
+        '504':
+          description: Gateway timeout
+
+  '/msl/{Id}/msl-route-optype': 
+    get:
+      summary: Returns an object of the associated msl route operation type based on msl id
+      tags:
+        - msl-route-optype-module
+      security:
+        - BearerAuth:
+          - MSL.View
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/mslRouteOpType'
+        '204':
+          description: No Content
+        '401':
+          description: Not authenticated
+        '403':
+          description: Not authorized
+        '404':
+          description: No msl with given `mslId` found  
+        '500':
+          description: Internal server error
+        '504':
+          description: Gateway timeout
+    post:
+      summary: Creates a new msl route operation type record based on msl id 
+      tags:
+        - msl-route-optype-module
+      security:
+        - BearerAuth:
+            - MSL.Update
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      requestBody:
+        description: Create msl route operation type standard fields
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/newMslRouteOpType'
+      responses:
+        '201':
+          description: The msl route operation type record was successfully created
+        '400':
+          description: Invalid payload
+        '401':
+          description: Not authenticated
+        '403':
+          description: Not authorized
+        '404':
+          description: No msl with the given `mslId` was found
+        '409':
+          description: The requested modification would have created a duplicate msl and therefore could not be completed
+        '500':
+          description: Internal server error
+        '504':
+          description: Gateway timeout
+          
+  '/msl/{Id}/msl-route': 
+    get:
+      summary: Returns an object of the associated msl route based on msl id
+      tags:
+        - msl-route-optype-module
+      security:
+        - BearerAuth:
+          - MSL.View
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/mslRouteOpType'
+        '204':
+          description: No Content
+        '401':
+          description: Not authenticated
+        '403':
+          description: Not authorized
+        '404':
+          description: No msl with given `mslId` found  
+        '500':
+          description: Internal server error
+        '504':
+          description: Gateway timeout
+          
+  '/msl/{Id}/msl-route-optype/{Id}': 
+    delete:
+      summary: Deletes an existing msl route operation type based on a particular {Id}
+      tags:
+        - msl-route-optype-module
+      security:
+        - BearerAuth:
+          - MSL.View
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      responses:
+        '200':
+          description: OK
+        '204':
+          description: No Content
+        '401':
+          description: Not authenticated
+        '403':
+          description: Not authorized
+        '404':
+          description: No msl geo node with given `mslId` or `id` found  
+        '500':
+          description: Internal server error
+        '504':
+          description: Gateway timeout
+  
+  '/msl/{Id}/msl-route-ex': 
+    get:
+      summary: Returns a list of excluded route based on msl id
+      tags:
+        - msl-route-ex-module
+      security:
+        - BearerAuth:
+          - MSL.View
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/mslRouteEx'
+        '204':
+          description: No Content
+        '401':
+          description: Not authenticated
+        '403':
+          description: Not authorized
+        '404':
+          description: No msl with given `mslId` found  
+        '500':
+          description: Internal server error
+        '504':
+          description: Gateway timeout
+    post:
+      summary: Creates excluded distributor based on msl id 
+      tags:
+        - msl-route-ex-module
+      security:
+        - BearerAuth:
+            - MSL.Update
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      requestBody:
+        description: Create msl route exclusion standard fields
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/newMslRouteEx'
+      responses:
+        '201':
+          description: The msl route exclusion record was successfully created
+        '400':
+          description: Invalid payload
+        '401':
+          description: Not authenticated
+        '403':
+          description: Not authorized
+        '404':
+          description: No msl with the given `mslId` was found
+        '409':
+          description: The requested modification would have created a duplicate msl and therefore could not be completed
+        '500':
+          description: Internal server error
+        '504':
+          description: Gateway timeout
+          
+  '/msl/{Id}/msl-route-ex/{Id}': 
+    delete:
+      summary: Deletes an existing excluded route based on a particular {Id}
+      tags:
+        - msl-route-ex-module
+      security:
+        - BearerAuth:
+          - MSL.View
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      responses:
+        '200':
+          description: OK
+        '204':
+          description: No Content
+        '401':
+          description: Not authenticated
+        '403':
+          description: Not authorized
+        '404':
+          description: No msl geo node with given `mslId` or `id` found  
+        '500':
+          description: Internal server error
+        '504':
+          description: Gateway timeout
