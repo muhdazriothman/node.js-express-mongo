@@ -1,0 +1,4 @@
+# include the patterns of files to ignore
+
+node_modules
+.vscode
