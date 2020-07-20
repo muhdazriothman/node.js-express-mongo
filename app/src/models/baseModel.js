@@ -1,25 +1,17 @@
 /* eslint-disable no-useless-catch */
 const mongo = require('mongodb');
-// const ObjectID = require('mongodb').ObjectID
+const joi = require('joi');
 
 class BaseModel {
   constructor() {
     this.collectionName = '';
     this._initialized = false;
     this._instance = null;
-    // this.sortBy = 'MODIFIED_DATE';
-    // this.inTransactionMode = false;
-    this._dbUrl = 'mongodb://localhost:27017';
-    this._dbName = 'mobilePhoneDb';
-    this._defaultFieldQuery = {
-      projection: 
-      { 
-        _id: 1, 
-        MODEL: 1, 
-        MANUFACTURER: 1,
-        OPERATING_SYSTEM: 1,
-      }
-    };
+    this._defaultDbUrl = 'mongodb://localhost:27017';
+    this._defaultDbName = 'mobilePhoneDb';
+    this._defaultFieldQuery = {};
+    this.createSchema = joi.object({});
+    this.updateSchema = joi.object({});
   }
 
   async _init() {
@@ -29,8 +21,8 @@ class BaseModel {
 
   async _openConn() {
     try {
-      const client = await mongo.MongoClient.connect(this._dbUrl, { useNewUrlParser: true });
-      const db = client.db(this._dbName);
+      const client = await mongo.MongoClient.connect(this._defaultDbUrl, { useNewUrlParser: true });
+      const db = client.db(this._defaultDbName);
       const collection = db.collection(this.collectionName);
 
       return { collection };
@@ -74,7 +66,7 @@ class BaseModel {
     }
   }
 
-  async findByCondition(fieldsQuery = {...this._defaultFieldQuery}, queryObj = {}) {
+  async findByCondition(fieldsQuery = {}, queryObj = {}) {
     try {
       const { collection } = await this._openConn();
 
@@ -157,50 +149,5 @@ class BaseModel {
       throw err;
     }
   }
-
-  //   db.books.update(
-  //     { _id: 1 },
-  //     {
-  //       $inc: { stock: 5 },
-  //       $set: {
-  //         item: "ABC123",
-  //         "info.publisher": "2222",
-  //         tags: [ "software" ],
-  //         "ratings.1": { by: "xyz", rating: 3 }
-  //       }
-  //     }
-  //  )
-
-
-
-  // async _findByCondition(fields, filterObj) {
-  //   try {
-  //     const { collection } = await this._openConn();
-
-
-  //     collection.insertMany([{name: 'Togo'}, {name: 'Syd'}], (err, result) => {
-  //       console.log(result);
-  //     });
-
-  //   } catch (err) {
-  //     throw err;
-  //   }
-  // }
-
-
-  // async findByCondition() {
-  //   try {
-  //     const client = await this._getClient();
-  //     const db = client.db(this._dbName);
-  //     const collection = db.collection(this.collectionName);
-
-  //     collection.insertMany([{name: 'Togo'}, {name: 'Syd'}], (err, result) => {
-  //       console.log(result);
-  //     });
-
-  //   } catch (err) {
-  //     throw err;
-  //   }
-  // }
 }
 module.exports = BaseModel;
