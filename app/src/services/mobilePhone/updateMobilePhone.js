@@ -9,6 +9,7 @@ util.inspect.defaultOptions.breakLength = Infinity;
 
 async function updateMobilePhone(mobilePhoneId, mobilePhoneData) {
   try {
+    await validateMobilePhoneData(mobilePhoneId, mobilePhoneData);
     const result = await mobilePhone.getInstance().update(mobilePhoneId, mobilePhoneData);
     return result;
   } catch (err) {
@@ -27,6 +28,9 @@ async function validateMobilePhoneData(mobilePhoneId, mobilePhoneData) {
       .then(mobilePhoneFromDb => {
         if (!mobilePhoneFromDb) {
           throw errorHandler.generateError(404, 'NotFoundError', `Record with ID: '${mobilePhoneId}' not found`);
+        }
+        if (mobilePhoneFromDb.MODEL !== mobilePhoneData.MODEL) {
+          throw errorHandler.generateError(404, 'BadRequestError', `MODEL cannot be modified`);
         }
       })
     );
