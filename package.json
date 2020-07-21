@@ -23,6 +23,8 @@
     "express": "^4.17.1",
     "helmet": "^3.23.3",
     "joi": "^17.1.1",
-    "mongodb": "^3.5.9"
+    "mongodb": "^3.5.9",
+    "password-hash": "^1.2.2",
+    "randomstring": "^1.1.5"
   }
 }

@@ -1,6 +1,6 @@
 'use strict';
 
 module.exports = {
-  mobilePhone: require('./mobilePhone')
+  mobilePhone: require('./mobilePhone'),
+  user: require('./user')
 };
-

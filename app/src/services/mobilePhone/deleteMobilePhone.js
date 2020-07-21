@@ -1,12 +1,10 @@
 /* eslint-disable no-useless-catch */
-const util = require('util');
+const errorHandler = require('../../lib/errorHandler');
 const mobilePhone = require('../../models/mobilePhone');
-
-util.inspect.defaultOptions.depth = null;
-util.inspect.defaultOptions.breakLength = Infinity;
 
 async function deleteMobilePhone(mobilePhoneId) {
   try {
+    await validateMobilePhone(mobilePhoneId);
     const result = await mobilePhone.getInstance().delete(mobilePhoneId);
     return result;
   } catch (err) {
@@ -14,4 +12,16 @@ async function deleteMobilePhone(mobilePhoneId) {
   }
 }
 
-module.exports = { deleteMobilePhone };
+async function validateMobilePhone(mobilePhoneId) {
+  try {
+    // validate duplicate mobile phone
+    const mobilePhoneFromDb = await mobilePhone.getInstance().findById(null, mobilePhoneId);
+    if (!mobilePhoneFromDb) {
+      throw errorHandler.generateError(404, 'NotFoundError', `Record with ID: '${mobilePhoneId}' not found`);
+    }
+  } catch (err) {
+    throw err;
+  }
+}
+
+module.exports = { deleteMobilePhone, validateMobilePhone };

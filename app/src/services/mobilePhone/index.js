@@ -1,5 +1,5 @@
 module.exports = Object.assign({},
-  require('./createMobilePhone'),
+  require('./getUser'),
   require('./getAllMobilePhone'),
   require('./getMobilePhoneById'),
   require('./deleteMobilePhone'),

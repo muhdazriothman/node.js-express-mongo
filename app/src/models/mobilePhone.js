@@ -6,6 +6,7 @@ const BaseModel = require('./baseModel');
 const createSchema = joi.object({
   MODEL: joi.string()
     .min(1)
+    .regex(/^[A-Z0-9]+(\s[A-Z0-9]+)?$/)
     .required(),
 
   MANUFACTURER: joi.string()
@@ -28,6 +29,7 @@ const createSchema = joi.object({
 const updateSchema = joi.object({
   MODEL: joi.string()
     .min(1)
+    .regex(/^[A-Z0-9]+(\s[A-Z0-9]+)?$/)
     .required(),
 
   MANUFACTURER: joi.string()
@@ -51,8 +53,6 @@ class MobilePhone extends BaseModel {
   constructor() {
     super();
     this.collectionName = 'MobilePhones';
-    this.createSchema = joi.object({});
-    this.updateSchema = joi.object({});
   }
   static getInstance() {
     if (!this._instance) {

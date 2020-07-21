@@ -12,8 +12,16 @@ async function handleMobilePhoneDeletion(req, res, next) {
 
     const record = await deleteMobilePhone(mobilePhoneId);
     return res.status(200).json(record);
-  } catch (error) {
-    return next(error);
+  } catch (err) {
+    if (
+      err.errorName === 'BadRequestError' ||
+      err.errorName === 'ConflictError' ||
+      err.errorName === 'NotFoundError' || 
+      err.errorName === 'ForbiddenError'
+    ) {
+      return res.status(err.status).json(err);
+    }
+    return next(err);
   }
 }
 

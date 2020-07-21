@@ -21,8 +21,16 @@ async function handleMobilePhoneRetrieval(req, res, next) {
       const httpStatusCode = (record && record.length > 0) ? 200 : 204; // 200 - OK; 204 - No Content
       return res.status(httpStatusCode).json(record);
     }
-  } catch (error) {
-    return next(error);
+  } catch (err) {
+    if (
+      err.errorName === 'BadRequestError' ||
+      err.errorName === 'ConflictError' ||
+      err.errorName === 'NotFoundError' || 
+      err.errorName === 'ForbiddenError'
+    ) {
+      return res.status(err.status).json(err);
+    }
+    return next(err);
   }
 }
 

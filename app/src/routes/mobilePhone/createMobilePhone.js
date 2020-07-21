@@ -12,21 +12,34 @@ util.inspect.defaultOptions.breakLength = Infinity;
 async function handleMobilePhoneCreation(req, res, next) {
   try {
     const payload = req.body;
-    const result = validator.validatePayload(mobilePhone.getCreateSchema(), payload);
-    if (!result.isValid) {
-      throw errorHandler.generateError(400, 'BadRequestError', result.errorMessage);
+
+    if (Array.isArray(payload)) {
+      for (const item of payload) {
+        validateMultiPayload(item);
+      }
+    } else {
+      validateMultiPayload(payload);
     }
+    
     const record = await createMobilePhone(payload);
     return res.status(201).json(record);
   } catch (err) {
     if (
       err.errorName === 'BadRequestError' ||
       err.errorName === 'ConflictError' ||
-      err.errorName === 'NotFoundError'
+      err.errorName === 'NotFoundError' || 
+      err.errorName === 'ForbiddenError'
     ) {
       return res.status(err.status).json(err);
     }
     return next(err);
+  }
+}
+
+function validateMultiPayload(obj) {
+  const result = validator.validatePayload(mobilePhone.getCreateSchema(), obj);
+  if (!result.isValid) {
+    throw errorHandler.generateError(400, 'BadRequestError', result.errorMessage);
   }
 }
 
