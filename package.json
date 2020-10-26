@@ -1,30 +1,34 @@
 {
-  "name": "sample",
+  "name": "user-svc",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "startlocal": "@powershell -Command $env:DEBUG='*'; node --max-http-header-size=80000 --inspect=9230 app/src/bin/www"
+    "startlocal": "@powershell -Command $env:DEBUG='*'; nodemon app/src/bin/www"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/muhdazriothman/node.js-express-mongo.git"
+    "url": "git+https://github.com/muhdazriothman/etiqa-user-svc.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/muhdazriothman/node.js-express-mongo/issues"
+    "url": "https://github.com/muhdazriothman/etiqa-user-svc/issues"
   },
-  "homepage": "https://github.com/muhdazriothman/node.js-express-mongo#readme",
+  "homepage": "https://github.com/muhdazriothman/etiqa-user-svc#readme",
   "dependencies": {
+    "ajv": "^6.12.6",
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
     "express": "^4.17.1",
     "helmet": "^3.23.3",
-    "joi": "^17.1.1",
+    "js-yaml": "^3.14.0",
     "mongodb": "^3.5.9",
-    "password-hash": "^1.2.2",
-    "randomstring": "^1.1.5"
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.6",
+    "supertest": "^5.0.0",
+    "tap": "^14.10.8",
+    "winston": "^3.3.3"
   }
 }

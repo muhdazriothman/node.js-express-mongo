@@ -1,31 +1,28 @@
 'use strict';
-const joi = require('joi');
 
 const BaseModel = require('./baseModel');
 
-const userSchema = joi.object({
-  USERNAME: joi.string()
-    .min(3)
-    .required(),
+const schema = {
+  create: 'createUser',
+  update: 'updateUser'
+};
 
-  PASSWORD: joi.string()
-    .required(8),
-});
-
-class MobilePhone extends BaseModel {
+class User extends BaseModel {
   constructor() {
     super();
     this.collectionName = 'Users';
   }
+  
   static getInstance() {
     if (!this._instance) {
-      this._instance = new MobilePhone();
+      this._instance = new User();
     }
     return this._instance;
   }
-  static getSchema() {
-    return userSchema;
+  
+  static getSchemaName() {
+    return schema;
   }
 }
 
-module.exports = MobilePhone;
+module.exports = User;

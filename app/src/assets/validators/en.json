@@ -1,5 +1,0 @@
-{
-    "pattern":{
-        "(.|\\s)*\\S(.|\\s)*": "not accept empty or whitespace"
-    }
-}

@@ -1,21 +1,21 @@
-const ctx = require('@newspage/lib-commons/ctx');
+// const ctx = require('@newspage/lib-commons/ctx');
 
 function createAuditTrail(record) {
-  return Object.assign(record, {
-    VERSION: 1.0,
-    CREATED_DATE: new Date().toISOString(),
-    CREATED_BY: ctx.getUserInfo().userId,
-    MODIFIED_DATE: new Date().toISOString(),
-    MODIFIED_BY: ctx.getUserInfo().userId
-  });
+  return { 
+    ...record,
+    version: 1.0,
+    isDeleted: false,
+    createdDate: new Date().toISOString(),
+    modifiedDate: new Date().toISOString()
+  };
 }
 
 function updateAuditTrail(record) {
-  return Object.assign(record, {
-    VERSION: Number(record.VERSION) + 1.0,
-    MODIFIED_DATE: new Date().toISOString(),
-    MODIFIED_BY: ctx.getUserInfo().userId
-  });
+  return { 
+    ...record,
+    version: Number(record.version) + 1.0,
+    modifiedDate: new Date().toISOString()
+  };
 }
 
 module.exports = {

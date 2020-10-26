@@ -1,0 +1,56 @@
+[
+    {
+      "status": 400,
+      "code": "InvalidPayload",
+      "message": "Invalid payload",
+      "developerMessage": "",
+      "moreInfoUrl": "",
+      "critically": 300,
+      "silentMode": false
+    },
+    {
+      "status": 400,
+      "code": "BadRequest",
+      "message": "Bad Request",
+      "developerMessage": "",
+      "moreInfoUrl": "",
+      "critically": 300,
+      "silentMode": false
+    },
+    {
+      "status": 403,
+      "code": "Forbidden",
+      "message": "Forbidden",
+      "developerMessage": "",
+      "moreInfoUrl": "",
+      "critically": 300,
+      "silentMode": false
+    },    
+    {
+      "status": 409,
+      "code": "Conflict",
+      "message": "The record already exists",
+      "developerMessage": "",
+      "moreInfoUrl": "",
+      "critically": 300,
+      "silentMode": false
+    },
+    {
+      "status": 404,
+      "code": "NotFound",
+      "message": "The record is not found",
+      "developerMessage": "",
+      "moreInfoUrl": "",
+      "critically": 300,
+      "silentMode": false
+    },
+    {
+      "status": 500,
+      "code": "InternalServerError",
+      "message": "Internal server error",
+      "developerMessage": "",
+      "moreInfoUrl": "",
+      "critically": 300,
+      "silentMode": false
+    }
+  ]

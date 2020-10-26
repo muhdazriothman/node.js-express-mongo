@@ -6,30 +6,8 @@ logger:
   level: debug
   request-format: ":date[iso] :method :url :status :response-time msec :res[content-length] bytes"
 
-server:
-  port: 5050
-  url: https://<service-name>.cfapps.jp10.hana.ondemand.com/api/v1.0
-  metadata-port: 5051
-
 errors:
-  path: "app/src/assets/errors/error-codes.json"
+  path: "app/src/lib/errorHandlingRoutes/error.json"
 
-#Dev
-# hana:
-#   host: zeus.hana.prod.ap-northeast-1.whitney.dbaas.ondemand.com
-#   port: 20244
-#   schema: "A40B71287F684109ABFCBCDFA7ED6147"
-#   user: "A40B71287F684109ABFCBCDFA7ED6147_7EE3B7ODKTCIVI6GCPVSIDUZE_RT"
-#   password: "Es141zcwH82LUAE6mbdCP4B3AnmSHCgm-0aTo92c-OEBCvroV_hlOgr3zSJPcz4dISWsiv8ocD5cMFRqhlbTgdxI9MeXMtyFeSBEh79s-p8TfT67Kv5L.uGG0iIg_Jlt"
-
-#QA
-# hana:
-#   host: localhost
-#   port: 20244
-#   schema: "A40B71287F684109ABFCBCDFA7ED6147"
-#   user: "5F55769C491A40219174331D913ED840_3UQ736336W83JW85FVE9NI4U1_RT"
-#   password: "Yg8h.3Rmu67DP2TsxuaGwL9UmDWPB-UV6y8Ryfpg-xNh3LgRcuy.pSrwvk33K8w.ekC4oQku8.Sg8.O4BhCuwcnU27J1vc_MBfgDpaxnES_6Mviss-OtYnaVKWziGnhB"
-
-#NODE_ENV:
-#  dev
-
+schema: 
+  path: "app/src/lib/payloadValidatorschema.json"

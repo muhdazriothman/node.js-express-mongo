@@ -1,6 +1,7 @@
 'use strict';
 
 module.exports = {
-  mobilePhone: require('./mobilePhone'),
-  user: require('./user')
+  user: require('./user'),
+  skill: require('./skill'),
+  hobby: require('./hobby')
 };

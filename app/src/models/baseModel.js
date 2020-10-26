@@ -1,17 +1,15 @@
 /* eslint-disable no-useless-catch */
 const mongo = require('mongodb');
-const joi = require('joi');
 
 class BaseModel {
   constructor() {
     this.collectionName = '';
+    this.objectSchema = '';
     this._initialized = false;
     this._instance = null;
     this._defaultDbUrl = 'mongodb://localhost:27017';
-    this._defaultDbName = 'mobilePhoneDb';
+    this._defaultDbName = 'cdnDb';
     this._defaultFieldQuery = {};
-    this.createSchema = joi.object({});
-    this.updateSchema = joi.object({});
   }
 
   async _init() {
@@ -31,14 +29,6 @@ class BaseModel {
     }
   }
 
-  // async _closeConn() {
-  //   try {
-      
-  //   } catch (err) {
-  //     throw err;
-  //   }
-  // }
-
   async insert(insertObjs) {
     try {
       const { collection } = await this._openConn();
@@ -49,14 +39,14 @@ class BaseModel {
 
         response = [];
         for (let i = 0; i < insertObjs.length; i++) {
-          let responseObj = Object.assign({}, insertObjs[i]);
+          let responseObj = { ...insertObjs[i] };
           responseObj._id = result.insertedIds[i];
           response.push(responseObj);
         }
 
       } else {
-        const result = await collection.insertOne(Object.assign({}, insertObjs));
-        response = Object.assign({}, insertObjs);
+        const result = await collection.insertOne({ ...insertObjs });
+        response = { ...insertObjs };
         response._id = result.insertedId;
       }
 
@@ -66,8 +56,13 @@ class BaseModel {
     }
   }
 
+
   async findByCondition(fieldsQuery = {}, queryObj = {}) {
     try {
+      if (queryObj._id) {
+        queryObj._id = mongo.ObjectId(queryObj._id);
+      }
+      
       const { collection } = await this._openConn();
 
       const results = await collection.find(queryObj, fieldsQuery).toArray();
@@ -98,7 +93,7 @@ class BaseModel {
       const results = await this.findByCondition(fieldsQuery, {});
 
       for (const result of results) {
-        let resultObj = Object.assign({}, result); 
+        let resultObj = { ...result }; 
         response.push(resultObj);
       }
 
@@ -112,10 +107,10 @@ class BaseModel {
     try {
       const { collection } = await this._openConn();
 
-      const setQuery = { $set: Object.assign({}, updateObj)};
+      const setQuery = { $set: { ...updateObj } };
       await collection.updateOne({ _id: mongo.ObjectId(id) }, setQuery);
 
-      const response = Object.assign({}, updateObj, { _id: id });
+      const response = { ...updateObj, _id: id };
       return response;
     } catch (err) {
       throw err;
@@ -150,4 +145,5 @@ class BaseModel {
     }
   }
 }
+
 module.exports = BaseModel;

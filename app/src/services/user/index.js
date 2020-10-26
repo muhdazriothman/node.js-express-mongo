@@ -1,3 +1,7 @@
-module.exports = Object.assign({},
-  require('./createUser')
-);
+module.exports = {
+  ...require('./userCreate'),
+  ...require('./userGetAll'),
+  ...require('./userGetById'),
+  ...require('./userUpdate'),
+  ...require('./userDelete')
+};
